@@ -1,19 +1,25 @@
 #include "messagenotification.h"
 #include <QtWidgets/QApplication>
+#include <filesystem>
+#include <QTextCodec>
 
-int main(int argc, char *argv[])
-{
-    QApplication a(argc, argv);
+int main(int argc, char *argv[]) {
+  QApplication a(argc, argv);
 
-    DatabaseInfo dbinfo("QSQLITE", "localhost", "E:\\DB\\Logs.db", "", "");
-    MessageNotification w;
+  std::string pwd = (std::string)std::tr2::sys::path(argv[0]).parent_path().string();
+  QTextCodec* tc = QTextCodec::codecForLocale();
+  QString dbname = QString(tc->toUnicode((pwd + "Logs.db").c_str()));
 
-    w.show();
+  DatabaseInfo dbinfo("QSQLITE", "localhost", dbname, "", "");
 
-    if (!w.createConnetion(&dbinfo)) {
-      //問題発生。DB読み込み直すようにする事。
-    }
-    w.run();
+  MessageNotification w;
 
-    return a.exec();
+  w.show();
+
+  if (!w.createConnetion(&dbinfo)) {
+    //問題発生。DB読み込み直すようにする事。
+  }
+  w.run();
+
+  return a.exec();
 }
