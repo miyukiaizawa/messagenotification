@@ -334,4 +334,4 @@ ASALocalRun/
 source/build
 
 [QT]
-src/MessageNotification/GeneratedFiles
+source/MessageNotification/GeneratedFiles/
