@@ -1,0 +1,3 @@
+[submodule "source/3rdparty"]
+	path = source/3rdparty
+	url = https://aizawa_miyuki@bitbucket.org/aizawa_miyuki/3rdpartylibraries.git
