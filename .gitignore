@@ -332,3 +332,6 @@ ASALocalRun/
 
 #build folder (no need to add built submodules)
 source/build
+
+[QT]
+*/GeneratedFiles
