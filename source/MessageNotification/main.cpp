@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
 
   std::string pwd = (std::string)std::tr2::sys::path(argv[0]).parent_path().string();
   QTextCodec* tc = QTextCodec::codecForLocale();
-  QString dbname = QString(tc->toUnicode((pwd + "Logs.db").c_str()));
+  QString dbname = QString(tc->toUnicode((pwd + "\\Logs.db").c_str()));
 
   DatabaseInfo dbinfo("QSQLITE", "localhost", dbname, "", "");
 
