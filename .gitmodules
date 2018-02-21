@@ -7,6 +7,6 @@
 [submodule "source/3rdparty-modules/qt-opencv-multithreaded"]
 	path = source/3rdparty-modules/qt-opencv-multithreaded
 	url = https://github.com/aizak-vare/qt-opencv-multithreaded.git
-[submodule "source/Qt-Frameless-Window-DarkStyle"]
-	path = source/Qt-Frameless-Window-DarkStyle
+[submodule "source/3rdparty-modules/Qt-Frameless-Window-DarkStyle"]
+	path = source/3rdparty-modules/Qt-Frameless-Window-DarkStyle
 	url = https://github.com/aizak-vare/Qt-Frameless-Window-DarkStyle.git
