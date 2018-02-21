@@ -1,8 +1,7 @@
-#ifndef MESSAGENOTIFICATION_H
-#define MESSAGENOTIFICATION_H
+#ifndef __NOTIFICATION_LIST_VIEW_H__
+#define __NOTIFICATION_LIST_VIEW_H__
 
 #include <QtWidgets/QMainWindow>
-#include "ui_messagenotification.h"
 #include "databaseinfo.h"
 #include "messagelistitemmodel.h"
 #include "messagelistitemdelegate.h"
@@ -11,6 +10,8 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QListWidget>
+#include "ImageBox.h"
+#include "framelesswindow.h"
 
 class ListItemUpdateWorker : public QObject {
   Q_OBJECT
@@ -27,41 +28,44 @@ public:
   int sleepTime;
 };
 
-class MessageNotification : public QMainWindow {
+class NotificationListView : public QWidget {
   Q_OBJECT
 public:
-  MessageNotification(QWidget *parent = 0);
-  ~MessageNotification();
+  NotificationListView(QWidget *parent = 0);
+  ~NotificationListView();
 
   public slots:
   bool createConnetion(DatabaseInfo *dbinfo);
   void run();
-
-  private slots:
   void updateListItems();
   void eraseCurrentItem();
   void itemChecked(const QModelIndex & index);
-
   void updateImageBox(const QModelIndex & index);
 
 private:
   void setupMainWidgetLayout(QWidget *parent);
   void setupMessageList(QLayout *parent);
 
-private:
-  Ui::MessageNotificationClass ui;
+  void adjustSelectionitem(const QModelIndex& index);
 
-  QVBoxLayout *centralWidgetLayout;
+private:
+  QMutex mutex_;
+  QVBoxLayout *layout;
 
   QListView *list;
   MessageListItemModel* listModel;
   MessageListItemDelegate *listDelegate;
-  std::string image_box_name;
+  QString imageboxName;
 
   QPushButton *eraseButton;
 
   QThread *thread;
   ListItemUpdateWorker* updateWorker;
+
+public:
+  FramelessWindow* framelessImageBox;
+  ImageBox* imagebox;
+
 };
 
-#endif // MESSAGENOTIFICATION_H
+#endif // __NOTIFICATION_LIST_VIEW_H__

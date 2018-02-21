@@ -24,11 +24,17 @@ public:
   bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
   QHash<int, QByteArray> roleNames() const;
 
+
   void addItem(MessageInfo* obj);
+  QModelIndex findChildIndex(MessageInfo* obj);
   void insertItem(QModelIndex index, MessageInfo* obj);
   void eraseItem(const QModelIndex &index);
   MessageInfo* getItem(const QModelIndex &index);
-  void clearItems();
+  void assainItems(const QList<MessageInfo*>& items, bool greater_sort = true);
+
+private:
+  void eraseDuplicatedItem(const QList<MessageInfo*>& items);
+  void updateNewItem(const QList<MessageInfo*>& items);
   void requestDataChanged();
 
 private:
@@ -37,12 +43,15 @@ private:
 
 enum ItemRoles {
   MessageInfoRole = Qt::UserRole + 1,
+  IconRole,
+  IconSizeRole,
   CategoryRole,
   DateRole,
   MessageRole,
   ImageInfoRole,
   CheckedRole,
   MessageColorRole,
+  ItemBackGroundRole,
 };
 
 inline MessageInfo* messageInfo(const QModelIndex& index) {

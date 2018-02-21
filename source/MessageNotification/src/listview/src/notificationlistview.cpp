@@ -1,14 +1,12 @@
-#include "messagenotification.h"
+#include "notificationlistview.h"
 #include "opencv2\opencv.hpp"
 #include <QTextCodec>
-#include <QSqlDatabase>
-#include <QSqlQuery>
-#include <QSqlError>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QLabel>
 #include <QThread>
 #include <QEventLoop>
+#include <QApplication>
 
 
 ListItemUpdateWorker::
@@ -23,34 +21,36 @@ doWork() {
   while (true) {
 
     emit updateListItems();
-    //emit listModelChanged(listModel);
 
-    QThread::sleep(sleepTime);
+    QThread::usleep(sleepTime);
   }
 }
 
 
-MessageNotification::
-MessageNotification(QWidget *parent) :
-  QMainWindow(parent) {
 
-  ui.setupUi(this);
-  setupMainWidgetLayout(this->centralWidget());
+
+NotificationListView::
+NotificationListView(QWidget *parent) :
+  QWidget(parent) {
+
+  setupMainWidgetLayout(this);
 
 }
 
-MessageNotification::
-~MessageNotification() {}
-
+NotificationListView::
+~NotificationListView() {}
 
 void
-MessageNotification::
+NotificationListView::
 setupMessageList(QLayout *parent) {
 
   list = new QListView();
   list->setObjectName(QStringLiteral("messageList"));
   list->setHidden(false);
   list->setEditTriggers(QAbstractItemView::NoEditTriggers);
+  list->setPalette(this->palette());
+  list->setSpacing(2);
+  list->setAutoFillBackground(true);
 
   listModel = new MessageListItemModel;
   listModel->setObjectName(QStringLiteral("messageListItemModel"));
@@ -60,38 +60,44 @@ setupMessageList(QLayout *parent) {
   listDelegate->setObjectName(QStringLiteral("messageListItemDelegate"));
   list->setItemDelegate(listDelegate);
   QListView::connect(list, SIGNAL(clicked(const QModelIndex &)),
-
-                     this, SLOT(itemChecked(const QModelIndex &)));
+                     this, SLOT(itemChecked(const QModelIndex &)), Qt::AutoConnection);
   QListView::connect(list, SIGNAL(clicked(const QModelIndex &)),
-                     this, SLOT(updateImageBox(const QModelIndex &)));
+                     this, SLOT(updateImageBox(const QModelIndex &)), Qt::AutoConnection);
 
   parent->addWidget(list);
 }
 
 void
-MessageNotification::
+NotificationListView::
 setupMainWidgetLayout(QWidget *parent) {
 
-  centralWidgetLayout = new QVBoxLayout();
+  layout = new QVBoxLayout();
 
   //for erase Button
   eraseButton = new QPushButton;
   eraseButton->setObjectName(QStringLiteral("eraseButton"));
-  eraseButton->setText(QStringLiteral("Erase"));
+  eraseButton->setText(QStringLiteral("Erase Message"));
   QListView::connect(eraseButton, SIGNAL(clicked()),
                      this, SLOT(eraseCurrentItem()));
-  centralWidgetLayout->addWidget(eraseButton);
+  layout->addWidget(eraseButton);
 
   //add messagelist
-  setupMessageList(centralWidgetLayout);
+  setupMessageList(layout);
+  parent->setLayout(layout);
 
-  parent->setLayout(centralWidgetLayout);
+  imageboxName = "image";
+  imagebox = new ImageBox(imageboxName);
 
+  framelessImageBox = new FramelessWindow;
+  framelessImageBox->setWindowTitle("Image");
+  framelessImageBox->setMinimumSize(QSize(480, 320));
+  framelessImageBox->setContent(imagebox);
+  framelessImageBox->setHidden(true);
 }
 
 
 bool
-MessageNotification::
+NotificationListView::
 createConnetion(DatabaseInfo *dbinfo) {
   QSqlDatabase db = QSqlDatabase::addDatabase(dbinfo->databaseType);
   db.setHostName(dbinfo->hostName);
@@ -106,12 +112,12 @@ createConnetion(DatabaseInfo *dbinfo) {
 }
 
 void
-MessageNotification::
+NotificationListView::
 run() {
   thread = new QThread;
   updateWorker = new ListItemUpdateWorker;
   updateWorker->listModel = listModel;
-  updateWorker->sleepTime = 1;
+  updateWorker->sleepTime = 100;
   updateWorker->moveToThread(thread);
   connect(thread, SIGNAL(started()), updateWorker, SLOT(doWork()));
   connect(updateWorker, SIGNAL(workFinished()), thread, SLOT(quit()));
@@ -125,29 +131,52 @@ run() {
 }
 
 void
-MessageNotification::
+NotificationListView::
 updateListItems() {
 
   //データベースを読み込んできて、データをダウンロードする
   //todo : 表示件数を日時が遅い順に並べて、表示最大件数を決める。
   QSqlQuery qry("SELECT * FROM Log ORDER BY ID DESC");
 
-  listModel->clearItems();
+  //古いセレクトアイテムのインデックスを持ってくる
+  auto oldselectedIndex = list->selectionModel()->currentIndex();
 
+  QList<MessageInfo*> messages;
   while (qry.next()) {
-    listModel->addItem(new MessageInfo(qry.value("ID").toInt(),
-                                       qry.value("Category").toString(),
-                                       qry.value("Date").toDateTime(),
-                                       qry.value("Message").toString(),
-                                       ImageInfo(qry.value("ImagePath").toString()),
-                                       qry.value("Checked").toBool()));
+    auto message = new MessageInfo(qry.value("ID").toInt(),
+                                   qry.value("Category").toString(),
+                                   qry.value("Date").toDateTime(),
+                                   qry.value("Message").toString(),
+                                   ImageInfo(qry.value("ImagePath").toString()),
+                                   qry.value("Checked").toBool());
+    messages.push_back(message);
+  }
 
-    auto item = new QListWidgetItem;
+  listModel->assainItems(messages);
+
+  adjustSelectionitem(oldselectedIndex);
+}
+
+void
+NotificationListView::
+adjustSelectionitem(const QModelIndex& index) {
+
+  auto info = messageInfo(index);
+  auto listIndex = listModel->findChildIndex(info);
+  if (!listIndex.row() >= 0) {
+    if (listIndex.row() != index.row()) {
+      list->selectionModel()->
+        setCurrentIndex(listIndex,
+                        QItemSelectionModel::SelectionFlag::ClearAndSelect);
+    }
+  }
+  else {
+    list->clearSelection();
   }
 }
 
 void
-MessageNotification::
+NotificationListView::
 eraseCurrentItem() {
 
   //削除でエラー出ないようにエラーチェックして
@@ -167,14 +196,26 @@ eraseCurrentItem() {
     return;
   }
 
+  //データベースから消えたら、画像データも削除する
+  QFile file;
+  file.setFileName(info->imageInfo().path());
+  if (!file.remove()) {
+    //画像がロックされたりして削除できないとき
+    //通常参照されながらプログラム動かしたりしないので
+    //とりあえずほっとく
+  }
   //成功したら表示上も削除する
   listModel->eraseItem(list->currentIndex());
+
+  //セレクトの削除
+  list->clearSelection();
+
 }
 
 void
-MessageNotification::
+NotificationListView::
 itemChecked(const QModelIndex & index) {
-
+  // mutex_.lock();
   //削除でエラー出ないようにエラーチェックして
   auto info = messageInfo(list->currentIndex());
   if (info == nullptr) {
@@ -195,12 +236,13 @@ itemChecked(const QModelIndex & index) {
 
   //データベースの更新が完了したら表示も更新
   info->setChecked(true);
-
+  //mutex_.unlock();
 }
 
 void
-MessageNotification::
+NotificationListView::
 updateImageBox(const QModelIndex & index) {
+  mutex_.lock();
   auto imageInfo = ::imageInfo(index);
   if (!imageInfo.path().isEmpty()) {
 
@@ -208,22 +250,25 @@ updateImageBox(const QModelIndex & index) {
     cv::Mat image = cv::imread(stlpath);
 
     if (!image.empty()) {
-      image_box_name = "image";
       //todo : windowの位置をメッセンジャーの隣に移動させとく
-      cv::imshow(image_box_name, image);
-      cv::waitKey(1);
+
+      if (!imagebox->isVisible()) {
+        auto w = QApplication::activeWindow();
+        framelessImageBox->move(w->pos().x() + w->size().width(), w->pos().y());
+      }
+      imagebox->showImage(image);
+      framelessImageBox->setHidden(false);
+      framelessImageBox->show();
     }
   }
   else if (!imageInfo.image().size().isEmpty()) {
 
   }
   else {
-    if (!image_box_name.empty()) {
-      cv::destroyWindow(image_box_name);
-      image_box_name.clear();
-    }
+    framelessImageBox->setHidden(true);
+    framelessImageBox->close();
   }
 
-
+  mutex_.unlock();
 
 }

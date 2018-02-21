@@ -11,6 +11,16 @@ MessageInfo(QObject *parent) :
   checked_(false) {}
 
 MessageInfo::
+MessageInfo(MessageInfo *info) :
+  QObject(info->parent()),
+  id_(info->id_),
+  category_(info->category_),
+  date_(info->date_),
+  message_(info->message_),
+  imageInfo_(info->imageInfo_),
+  checked_(info->checked_) {}
+
+MessageInfo::
 MessageInfo(const int &_id,
             const QString &_category,
             const QDateTime &_date,
@@ -29,10 +39,25 @@ MessageInfo(const int &_id,
 MessageInfo::
 MessageInfo(const MessageInfo& info) :
   QObject(info.parent()),
+  id_(info.id_),
   category_(info.category_),
   date_(info.date_),
   message_(info.message_),
-  imageInfo_(info.imageInfo_) {}
+  imageInfo_(info.imageInfo_),
+  checked_(info.checked_) {}
+
+MessageInfo&
+MessageInfo::
+operator = (const MessageInfo& other) {
+  setParent(other.parent());
+  id_ = other.id();
+  category_ = other.category();
+  date_ = other.date();
+  message_ = other.message();
+  imageInfo_ = other.imageInfo();
+  return (*this);
+}
+
 
 QString
 MessageInfo::

@@ -2,6 +2,9 @@
 #ifndef __DATABASE_INFO_H__
 #define __DATABASE_INFO_H__
 #include <QObject>
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
 
 class DatabaseInfo : public QObject {
   Q_OBJECT

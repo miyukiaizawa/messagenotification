@@ -18,6 +18,7 @@ public:
 
 public:
   MessageInfo(QObject *parent = 0);
+  MessageInfo(MessageInfo *info);
   MessageInfo(const int& _id,
               const QString &_category,
               const QDateTime &_date,
@@ -26,6 +27,16 @@ public:
               const bool& _checked,
               QObject *parent = 0);
   MessageInfo(const MessageInfo& info);
+
+  MessageInfo& operator = (const MessageInfo& other);
+
+  bool operator <(const MessageInfo &other) const {
+    return (date().toMSecsSinceEpoch() < other.date().toMSecsSinceEpoch());
+  };
+  bool operator >(const MessageInfo &other) const {
+    return (date().toMSecsSinceEpoch() > other.date().toMSecsSinceEpoch());
+  };
+
 
   QString category() const;
   void setCategory(const QString& value);

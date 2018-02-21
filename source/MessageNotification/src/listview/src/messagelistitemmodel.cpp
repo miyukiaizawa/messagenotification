@@ -2,6 +2,10 @@
 #include <QFont>
 #include <QBrush>
 #include <QDebug>
+#include <QApplication>
+#include <QImage>
+#include <QAction>
+#include <QIcon>
 
 MessageListItemModel::
 MessageListItemModel(QObject *parent)
@@ -53,17 +57,14 @@ data(const QModelIndex &index, int role) const {
   } return QVariant();
 
   case Qt::FontRole: {
-    QFont boldFont;
+    QFont boldFont = QApplication::font();
     boldFont.setBold(true);
     boldFont.setPointSize(18);
     return boldFont;
   } return QVariant();
 
   case Qt::BackgroundRole: {
-    if (!entry->checked()) {
-      return QBrush(Qt::yellow);
-    }
-  } return QBrush(Qt::white);
+  } return QVariant();
 
   case Qt::TextAlignmentRole: {
 
@@ -83,11 +84,26 @@ data(const QModelIndex &index, int role) const {
 
   } return QVariant();
 
+  case ItemRoles::IconRole: {
+    if (!entry->checked()) {
+      QImage icon(":/MessageNotification/icon/warning-sign-red.png");
+      QSize size = qvariant_cast<QSize>(data(index, ItemRoles::IconSizeRole));
+      icon = icon.scaled(size, Qt::AspectRatioMode::KeepAspectRatio);
+      return QVariant::fromValue(icon);
+    }
+  } return QVariant();
+
+  case ItemRoles::IconSizeRole: {
+  } return QVariant::fromValue(QSize(64, 64));
+
   case ItemRoles::MessageColorRole: {
-    if (entry->category() == "alert") {
+    if (entry->category() == "Alert") {
       return QBrush(Qt::red);
     }
-  } return QBrush(Qt::black);
+    if (entry->category() == "Info") {
+      return QBrush(Qt::green);
+    }
+  } return QBrush(Qt::white);
 
   case ItemRoles::CategoryRole: {
   } return QVariant::fromValue(entry->category());
@@ -100,10 +116,15 @@ data(const QModelIndex &index, int role) const {
 
   case ItemRoles::ImageInfoRole: {
   } return QVariant::fromValue(entry->imageInfo());
+
   case ItemRoles::CheckedRole: {
   } return QVariant::fromValue(entry->checked());
+
   case ItemRoles::MessageInfoRole: {
   }return QVariant::fromValue(entry);
+
+  case ItemRoles::ItemBackGroundRole: {
+  } return QBrush(QColor::fromRgba(qRgba(66, 66, 66, 66)));
 
   }
 
@@ -144,6 +165,28 @@ addItem(MessageInfo* obj) {
   datalist.append(obj);
   emit dataChanged(createIndex(0, 0, datalist[0]),
                    createIndex(datalist.size() - 1, 0, datalist[datalist.size() - 1]));
+}
+
+QModelIndex 
+MessageListItemModel::
+findChildIndex(MessageInfo* obj) {
+  int row = -1, col = 0;
+  MessageInfo* data = nullptr;
+
+  if (obj == nullptr) {
+    return createIndex(row, col, data);
+  }
+
+  for (int index = 0; index < datalist.size(); index++) {
+    data = datalist[index];
+    if (data->id() == obj->id()) {
+      row = index;
+      data = datalist[index];
+      break;
+    }
+  }
+
+  return createIndex(row, col, data);
 }
 
 void
@@ -195,8 +238,76 @@ getItem(const QModelIndex &index) {
   return datalist[index.row()];
 }
 
+
 void
 MessageListItemModel::
-clearItems() {
-  datalist.clear();
+eraseDuplicatedItem(const QList<MessageInfo*>& items) {
+
+  for (int Oldindex = 0; Oldindex < datalist.size(); Oldindex++) {
+
+    auto oldItem = datalist[Oldindex];
+    bool found_same = false;
+    for (int newIndex = 0; newIndex < items.size(); newIndex++) {
+      auto newItem = items[newIndex];
+      if (oldItem->id() == newItem->id()) {
+        found_same = true;
+        break;
+      }
+    }
+
+    if (found_same) {
+      continue;
+    }
+    datalist.erase(datalist.begin() + Oldindex);
+  }
+
 }
+
+void
+MessageListItemModel::
+updateNewItem(const QList<MessageInfo*>& items) {
+
+  //update data
+  for (int newIndex = items.size() - 1; newIndex >= 0; newIndex--) {
+    auto newItem = items[newIndex];
+
+    bool insertable = true;
+    for (int oldIndex = datalist.size() - 1; oldIndex >= 0; oldIndex--) {
+      auto oldItem = datalist[oldIndex];
+      if (oldItem->id() == newItem->id()) {
+        oldItem->setCategory(newItem->category());
+        oldItem->setDate(newItem->date());
+        oldItem->setMessage(newItem->message());
+        oldItem->setImageInfo(newItem->imageInfo());
+        oldItem->setChecked(newItem->checked());
+        insertable = false;
+        break;
+      }
+    }
+
+    if (insertable) {
+      datalist.push_back(newItem);
+      //add anyway without to take care about item order 
+    }
+  }
+}
+
+void
+MessageListItemModel::
+assainItems(const QList<MessageInfo*>& items, bool greater_sort) {
+
+  eraseDuplicatedItem(items);
+
+  updateNewItem(items);
+
+  //need to sort item order at here
+  if (greater_sort) {
+    qSort(datalist.begin(), datalist.end(), qGreater<MessageInfo>());
+  }
+  else {
+    qSort(datalist.begin(), datalist.end(), qLess<MessageInfo>());
+  }
+
+  requestDataChanged();
+}
+
