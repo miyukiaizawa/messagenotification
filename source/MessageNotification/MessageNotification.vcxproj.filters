@@ -38,29 +38,14 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="messagenotification.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_messagenotification.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_messagenotification.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_messagenotification.cpp">
       <Filter>Generated Files</Filter>
-    </ClCompile>
-    <ClCompile Include="messageinfo.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_messageinfo.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_messageinfo.cpp">
       <Filter>Generated Files\Release</Filter>
-    </ClCompile>
-    <ClCompile Include="imageinfo.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_imageinfo.cpp">
       <Filter>Generated Files\Debug</Filter>
@@ -74,14 +59,8 @@
     <ClCompile Include="GeneratedFiles\Release\moc_messagelistitemmodel.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="messagelistitemmodel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_messagelistitemdelegate.cpp">
       <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="messagelistitemdelegate.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_messagelistitemdelegate.cpp">
       <Filter>Generated Files\Release</Filter>
@@ -92,30 +71,174 @@
     <ClCompile Include="GeneratedFiles\Release\moc_databaseinfo.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_messagelistwidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_messagelistwidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_messagenotification2.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_messagenotification2.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_messagelistwidgetitemwidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_messagelistwidgetitemwidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\info\src\imageinfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\info\src\messageinfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\listview\src\messagelistitemdelegate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\listview\src\messagelistitemmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_titlebar.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_titlebar.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_darkstyle.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Qt-Frameless-Window-DarkStyle\framelesswindow\windowdragger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Qt-Frameless-Window-DarkStyle\framelesswindow\framelesswindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_windowdragger.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_windowdragger.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_framelesswindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_framelesswindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Qt-Frameless-Window-DarkStyle\DarkStyle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_DarkStyle.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_DarkStyle.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\messagenotification.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_notificationlistview.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_notificationlistview.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="src\listview\src\notificationlistview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_messagenotification.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_messagenotification.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\qrc_framelesswindow.cpp">
+      <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MatToQImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_FrameLabel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="FrameLabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_FrameLabel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_ImageBox.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_ImageBox.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="messagenotification.h">
-      <Filter>Header Files</Filter>
-    </CustomBuild>
     <CustomBuild Include="messagenotification.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
     <CustomBuild Include="messagenotification.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="messageinfo.h">
+    <CustomBuild Include="src\database\include\databaseinfo.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="imageinfo.h">
+    <CustomBuild Include="src\info\include\imageinfo.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="messagelistitemmodel.h">
+    <CustomBuild Include="src\info\include\messageinfo.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="messagelistitemdelegate.h">
+    <CustomBuild Include="src\listview\include\messagelistitemdelegate.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="databaseinfo.h">
+    <CustomBuild Include="src\listview\include\messagelistitemmodel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\listwidget\include\messagelistwidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\listwidget\include\messagelistwidgetitemwidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\listwidget\include\messagenotification2.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="include\titlebar.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Qt-Frameless-Window-DarkStyle\darkstyle.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Qt-Frameless-Window-DarkStyle\framelesswindow\framelesswindow.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Qt-Frameless-Window-DarkStyle\framelesswindow.qrc">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Qt-Frameless-Window-DarkStyle\framelesswindow\windowdragger.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Qt-Frameless-Window-DarkStyle\framelesswindow\framelesswindow.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\Qt-Frameless-Window-DarkStyle\DarkStyle.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="src\listview\include\notificationlistview.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="include\messagenotification.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="FrameLabel.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ImageBox.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
@@ -123,8 +246,115 @@
     <ClInclude Include="GeneratedFiles\ui_messagenotification.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
-    <ClInclude Include="types.h">
+    <ClInclude Include="include\types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\listwidget\include\messagelistwidgetitem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Frame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_framelesswindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MatToQImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MessageNotification.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\images\icon_window_close.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\images\icon_window_maximize.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\images\icon_window_minimize.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\images\icon_window_restore.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_branch_closed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_branch_end.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_branch_more.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_branch_open.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_checkbox_checked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_checkbox_checked_disabled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_checkbox_checked_pressed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_checkbox_indeterminate.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_checkbox_indeterminate_disabled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_checkbox_indeterminate_pressed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_checkbox_unchecked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_checkbox_unchecked_disabled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_checkbox_unchecked_pressed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_close.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_radiobutton_checked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_radiobutton_checked_disabled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_radiobutton_checked_pressed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_radiobutton_unchecked.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_radiobutton_unchecked_disabled.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_radiobutton_unchecked_pressed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_restore.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_undock.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\icon_vline.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="list.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Qt-Frameless-Window-DarkStyle\darkstyle\darkstyle.qss">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

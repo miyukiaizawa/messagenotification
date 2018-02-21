@@ -1,4 +1,6 @@
 <RCC>
-    <qresource prefix="MessageNotification">
+    <qresource prefix="/MessageNotification">
+        <file>icon/warning-sign-red.png</file>
+        <file>icon/list.png</file>
     </qresource>
 </RCC>
