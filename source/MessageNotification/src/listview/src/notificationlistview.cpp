@@ -163,7 +163,7 @@ adjustSelectionitem(const QModelIndex& index) {
 
   auto info = messageInfo(index);
   auto listIndex = listModel->findChildIndex(info);
-  if (!listIndex.row() >= 0) {
+  if (listIndex.row() >= 0) {
     if (listIndex.row() != index.row()) {
       list->selectionModel()->
         setCurrentIndex(listIndex,
