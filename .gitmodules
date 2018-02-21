@@ -1,3 +1,6 @@
 [submodule "source/3rdparty"]
 	path = source/3rdparty
 	url = https://aizawa_miyuki@bitbucket.org/aizawa_miyuki/3rdpartylibraries.git
+[submodule "source/3rdparty-modules/Qt-Advanced-Docking-System"]
+	path = source/3rdparty-modules/Qt-Advanced-Docking-System
+	url = https://github.com/aizak-vare/Qt-Advanced-Docking-System.git
