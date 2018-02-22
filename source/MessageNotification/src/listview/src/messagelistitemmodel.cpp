@@ -167,7 +167,7 @@ addItem(MessageInfo* obj) {
                    createIndex(datalist.size() - 1, 0, datalist[datalist.size() - 1]));
 }
 
-QModelIndex 
+QModelIndex
 MessageListItemModel::
 findChildIndex(MessageInfo* obj) {
   int row = -1, col = 0;
@@ -239,10 +239,10 @@ getItem(const QModelIndex &index) {
 }
 
 
-void
+bool
 MessageListItemModel::
 eraseDuplicatedItem(const QList<MessageInfo*>& items) {
-
+  bool ret = false;
   for (int Oldindex = 0; Oldindex < datalist.size(); Oldindex++) {
 
     auto oldItem = datalist[Oldindex];
@@ -259,14 +259,15 @@ eraseDuplicatedItem(const QList<MessageInfo*>& items) {
       continue;
     }
     datalist.erase(datalist.begin() + Oldindex);
+    ret |= true;
   }
-
+  return ret;
 }
 
-void
+bool
 MessageListItemModel::
 updateNewItem(const QList<MessageInfo*>& items) {
-
+  bool ret = false;
   //update data
   for (int newIndex = items.size() - 1; newIndex >= 0; newIndex--) {
     auto newItem = items[newIndex];
@@ -275,11 +276,27 @@ updateNewItem(const QList<MessageInfo*>& items) {
     for (int oldIndex = datalist.size() - 1; oldIndex >= 0; oldIndex--) {
       auto oldItem = datalist[oldIndex];
       if (oldItem->id() == newItem->id()) {
-        oldItem->setCategory(newItem->category());
-        oldItem->setDate(newItem->date());
-        oldItem->setMessage(newItem->message());
-        oldItem->setImageInfo(newItem->imageInfo());
-        oldItem->setChecked(newItem->checked());
+
+        if (oldItem->category() != newItem->category()) {
+          oldItem->setCategory(newItem->category());
+          ret |= true;
+        }
+        if (oldItem->date() != newItem->date()) {
+          oldItem->setDate(newItem->date());
+          ret |= true;
+        }
+        if (oldItem->message() != newItem->message()) {
+          oldItem->setMessage(newItem->message());
+          ret |= true;
+        }
+        if (oldItem->imageInfo() != newItem->imageInfo()) {
+          oldItem->setImageInfo(newItem->imageInfo());
+          ret |= true;
+        }
+        if (oldItem->checked() != newItem->checked()) {
+          oldItem->setChecked(newItem->checked());
+          ret |= true;
+        }
         insertable = false;
         break;
       }
@@ -287,27 +304,31 @@ updateNewItem(const QList<MessageInfo*>& items) {
 
     if (insertable) {
       datalist.push_back(newItem);
+      ret |= true;
       //add anyway without to take care about item order 
     }
   }
+  return ret;
 }
 
 void
 MessageListItemModel::
 assainItems(const QList<MessageInfo*>& items, bool greater_sort) {
 
-  eraseDuplicatedItem(items);
+  bool erased = eraseDuplicatedItem(items);
 
-  updateNewItem(items);
+  bool updated = updateNewItem(items);
 
-  //need to sort item order at here
-  if (greater_sort) {
-    qSort(datalist.begin(), datalist.end(), qGreater<MessageInfo>());
+  if (erased || updated) {
+
+    //need to sort item order at here
+    if (greater_sort) {
+      qSort(datalist.begin(), datalist.end(), qGreater<MessageInfo>());
+    }
+    else {
+      qSort(datalist.begin(), datalist.end(), qLess<MessageInfo>());
+    }
+    requestDataChanged();
   }
-  else {
-    qSort(datalist.begin(), datalist.end(), qLess<MessageInfo>());
-  }
-
-  requestDataChanged();
 }
 

@@ -44,7 +44,7 @@ void
 NotificationListView::
 setupMessageList(QLayout *parent) {
 
-  list = new QListView();
+  list = new QListView(this);
   list->setObjectName(QStringLiteral("messageList"));
   list->setHidden(false);
   list->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -74,7 +74,7 @@ setupMainWidgetLayout(QWidget *parent) {
   layout = new QVBoxLayout();
 
   //for erase Button
-  eraseButton = new QPushButton;
+  eraseButton = new QPushButton(parent);
   eraseButton->setObjectName(QStringLiteral("eraseButton"));
   eraseButton->setText(QStringLiteral("Erase Message"));
   QListView::connect(eraseButton, SIGNAL(clicked()),
@@ -85,10 +85,11 @@ setupMainWidgetLayout(QWidget *parent) {
   setupMessageList(layout);
   parent->setLayout(layout);
 
-  imageboxName = "image";
-  imagebox = new ImageBox(imageboxName);
-
   framelessImageBox = new FramelessWindow;
+
+  imageboxName = "image";
+  imagebox = new ImageBox(imageboxName, framelessImageBox);
+
   framelessImageBox->setWindowTitle("Image");
   framelessImageBox->setMinimumSize(QSize(480, 320));
   framelessImageBox->setContent(imagebox);

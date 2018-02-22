@@ -33,8 +33,8 @@ public:
   void assainItems(const QList<MessageInfo*>& items, bool greater_sort = true);
 
 private:
-  void eraseDuplicatedItem(const QList<MessageInfo*>& items);
-  void updateNewItem(const QList<MessageInfo*>& items);
+  bool eraseDuplicatedItem(const QList<MessageInfo*>& items);
+  bool updateNewItem(const QList<MessageInfo*>& items);
   void requestDataChanged();
 
 private:

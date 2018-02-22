@@ -13,10 +13,20 @@
 
 int main(int argc, char *argv[]) {
 
+
+
   QDir exe_path(argv[0]);
   exe_path.cdUp();
   QDir pwd = exe_path.path();
-  QDir dbname = pwd.path() + QStringLiteral("/Logs.db");
+
+  auto appData = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+  
+  auto defaultdbname = appData + QStringLiteral("/MovingObjectDetector") + QStringLiteral("/Logs.db");
+
+  QTextCodec* tc = QTextCodec::codecForLocale();
+  auto cmdbdname = (argc > 1) ? QString(tc->toUnicode(argv[1]) + QStringLiteral("/Logs.db")) : QString();
+
+  QDir dbname = (cmdbdname.isEmpty()) ? defaultdbname : cmdbdname;
 
   QApplication app(argc, argv);
   app.setStyle(new DarkStyle);
@@ -35,9 +45,9 @@ int main(int argc, char *argv[]) {
   framelessWindow.setWindowTitle("Notification");
   framelessWindow.setMinimumSize(QSize(480, 320));
   framelessWindow.setContent(notification);
-  framelessWindow.show();
   //framelessWindow.setWindowFlag(Qt::Tool, true);
   framelessWindow.setWindowIcon(QIcon(":/MessageNotification/icon/list.png"));
+  framelessWindow.show();
 
 
   QObject::connect(notification, SIGNAL(hideWindow()), &framelessWindow, SLOT(on_minimizeButton_clicked()));
