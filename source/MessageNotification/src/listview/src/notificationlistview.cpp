@@ -1,4 +1,4 @@
-#include "notificationlistview.h"
+ï»¿#include "notificationlistview.h"
 #include "opencv2\opencv.hpp"
 #include <QTextCodec>
 #include <QFileDialog>
@@ -22,7 +22,7 @@ doWork() {
 
     emit updateListItems();
 
-    QThread::usleep(sleepTime);
+    QThread::msleep(sleepTime);
   }
 }
 
@@ -135,11 +135,14 @@ void
 NotificationListView::
 updateListItems() {
 
-  //ƒf[ƒ^ƒx[ƒX‚ð“Ç‚Ýž‚ñ‚Å‚«‚ÄAƒf[ƒ^‚ðƒ_ƒEƒ“ƒ[ƒh‚·‚é
-  //todo : •\Ž¦Œ”‚ð“úŽž‚ª’x‚¢‡‚É•À‚×‚ÄA•\Ž¦Å‘åŒ”‚ðŒˆ‚ß‚éB
-  QSqlQuery qry("SELECT * FROM Log ORDER BY ID DESC");
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’èª­ã¿è¾¼ã‚“ã§ãã¦ã€ãƒ‡ãƒ¼ã‚¿ã‚’ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã™ã‚‹
+  //todo : è¡¨ç¤ºä»¶æ•°ã‚’æ—¥æ™‚ãŒé…ã„é †ã«ä¸¦ã¹ã¦ã€è¡¨ç¤ºæœ€å¤§ä»¶æ•°ã‚’æ±ºã‚ã‚‹ã€‚
+  QSqlDatabase::database().transaction();
+  QSqlQuery qry;
+  qry.exec("SELECT * FROM Log ORDER BY ID DESC");
+  QSqlDatabase::database().commit();
 
-  //ŒÃ‚¢ƒZƒŒƒNƒgƒAƒCƒeƒ€‚ÌƒCƒ“ƒfƒbƒNƒX‚ðŽ‚Á‚Ä‚­‚é
+  //å¤ã„ã‚»ãƒ¬ã‚¯ãƒˆã‚¢ã‚¤ãƒ†ãƒ ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æŒã£ã¦ãã‚‹
   auto oldselectedIndex = list->selectionModel()->currentIndex();
 
   QList<MessageInfo*> messages;
@@ -180,35 +183,38 @@ void
 NotificationListView::
 eraseCurrentItem() {
 
-  //íœ‚ÅƒGƒ‰[o‚È‚¢‚æ‚¤‚ÉƒGƒ‰[ƒ`ƒFƒbƒN‚µ‚Ä
+  //å‰Šé™¤ã§ã‚¨ãƒ©ãƒ¼å‡ºãªã„ã‚ˆã†ã«ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ã—ã¦
   auto info = messageInfo(list->currentIndex());
   if (info == nullptr) {
     return;
   }
 
-  //ƒf[ƒ^ƒx[ƒX‚É€–Ú‚Ìíœ‚ð\¿
-  QSqlQuery qry(
+  QSqlDatabase::database().transaction();
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«é …ç›®ã®å‰Šé™¤ã‚’ç”³è«‹
+  QSqlQuery qry;
+  auto ret = qry.exec(
     "DELETE FROM log \
      WHERE ID = " + QString::number(info->id())
   );
 
-  if (!qry.exec()) {
+  if (!ret) {
     //error message
     return;
   }
+  QSqlDatabase::database().commit();
 
-  //ƒf[ƒ^ƒx[ƒX‚©‚çÁ‚¦‚½‚çA‰æ‘œƒf[ƒ^‚àíœ‚·‚é
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‹ã‚‰æ¶ˆãˆãŸã‚‰ã€ç”»åƒãƒ‡ãƒ¼ã‚¿ã‚‚å‰Šé™¤ã™ã‚‹
   QFile file;
   file.setFileName(info->imageInfo().path());
   if (!file.remove()) {
-    //‰æ‘œ‚ªƒƒbƒN‚³‚ê‚½‚è‚µ‚Äíœ‚Å‚«‚È‚¢‚Æ‚«
-    //’ÊíŽQÆ‚³‚ê‚È‚ª‚çƒvƒƒOƒ‰ƒ€“®‚©‚µ‚½‚è‚µ‚È‚¢‚Ì‚Å
-    //‚Æ‚è‚ ‚¦‚¸‚Ù‚Á‚Æ‚­
+    //ç”»åƒãŒãƒ­ãƒƒã‚¯ã•ã‚ŒãŸã‚Šã—ã¦å‰Šé™¤ã§ããªã„ã¨ã
+    //é€šå¸¸å‚ç…§ã•ã‚ŒãªãŒã‚‰ãƒ—ãƒ­ã‚°ãƒ©ãƒ å‹•ã‹ã—ãŸã‚Šã—ãªã„ã®ã§
+    //ã¨ã‚Šã‚ãˆãšã»ã£ã¨ã
   }
-  //¬Œ÷‚µ‚½‚ç•\Ž¦ã‚àíœ‚·‚é
+  //æˆåŠŸã—ãŸã‚‰è¡¨ç¤ºä¸Šã‚‚å‰Šé™¤ã™ã‚‹
   listModel->eraseItem(list->currentIndex());
 
-  //ƒZƒŒƒNƒg‚Ìíœ
+  //ã‚»ãƒ¬ã‚¯ãƒˆã®å‰Šé™¤
   list->clearSelection();
 
 }
@@ -217,13 +223,13 @@ void
 NotificationListView::
 itemChecked(const QModelIndex & index) {
   // mutex_.lock();
-  //íœ‚ÅƒGƒ‰[o‚È‚¢‚æ‚¤‚ÉƒGƒ‰[ƒ`ƒFƒbƒN‚µ‚Ä
+  //å‰Šé™¤ã§ã‚¨ãƒ©ãƒ¼å‡ºãªã„ã‚ˆã†ã«ã‚¨ãƒ©ãƒ¼ãƒã‚§ãƒƒã‚¯ã—ã¦
   auto info = messageInfo(list->currentIndex());
   if (info == nullptr) {
     return;
   }
 
-  //ƒf[ƒ^ƒx[ƒX‚É€–Ú‚ðŠm”F‚µ‚½‚±‚Æ‚ð’Ê’m
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«é …ç›®ã‚’ç¢ºèªã—ãŸã“ã¨ã‚’é€šçŸ¥
   QSqlQuery qry(
     "UPDATE log \
       SET Checked = 'true' \
@@ -235,7 +241,7 @@ itemChecked(const QModelIndex & index) {
     return;
   }
 
-  //ƒf[ƒ^ƒx[ƒX‚ÌXV‚ªŠ®—¹‚µ‚½‚ç•\Ž¦‚àXV
+  //ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®æ›´æ–°ãŒå®Œäº†ã—ãŸã‚‰è¡¨ç¤ºã‚‚æ›´æ–°
   info->setChecked(true);
   //mutex_.unlock();
 }
@@ -251,7 +257,7 @@ updateImageBox(const QModelIndex & index) {
     cv::Mat image = cv::imread(stlpath);
 
     if (!image.empty()) {
-      //todo : window‚ÌˆÊ’u‚ðƒƒbƒZƒ“ƒWƒƒ[‚Ì—×‚ÉˆÚ“®‚³‚¹‚Æ‚­
+      //todo : windowã®ä½ç½®ã‚’ãƒ¡ãƒƒã‚»ãƒ³ã‚¸ãƒ£ãƒ¼ã®éš£ã«ç§»å‹•ã•ã›ã¨ã
 
       if (!imagebox->isVisible()) {
         auto w = QApplication::activeWindow();

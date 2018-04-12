@@ -1,4 +1,4 @@
-#include <QtWidgets/QApplication>
+ï»¿#include <QtWidgets/QApplication>
 #include <filesystem>
 #include <QTextCodec>
 #include <QPalette>
@@ -13,7 +13,7 @@
 
 int main(int argc, char *argv[]) {
 
-
+  QThread::msleep(500);
 
   QDir exe_path(argv[0]);
   exe_path.cdUp();
@@ -37,7 +37,7 @@ int main(int argc, char *argv[]) {
 
   auto notification = new MessageNotification();
   if (!notification->createConnetion(&dbinfo)) {
-    //DB“Ç‚Ýž‚Ý’¼‚·‚æ‚¤‚É‚·‚éŽ–B
+    //DBèª­ã¿è¾¼ã¿ç›´ã™ã‚ˆã†ã«ã™ã‚‹äº‹ã€‚
   }
 
   notification->run();
